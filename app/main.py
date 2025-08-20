@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from .db import engine, get_db
 from .models import Base
 from . import schemas, crud
+from fastapi import Request
 
 app = FastAPI(title="Trivia API", version="0.1.0")
 
@@ -69,3 +70,12 @@ def delete_question(question_id: int, db: Session = Depends(get_db)):
 @app.get("/questions/search", response_model=list[schemas.QuestionOut])
 def search(q: str, limit: int = 50, db: Session = Depends(get_db)):
     return crud.search_questions(db, q, limit)
+
+@app.get("/cors-check")
+def cors_check(request: Request):
+    origin = request.headers.get("origin", "No Origin header")
+    return {
+        "message": "CORS check OK",
+        "origin_received": origin,
+        "allowed_origins": origins,
+    }
