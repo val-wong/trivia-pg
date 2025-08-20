@@ -11,3 +11,13 @@ services:
         fromDatabase:
           name: trivia-db
           property: connectionString
+
+  - type: static
+    name: trivia-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://trivia-pg.onrender.com
